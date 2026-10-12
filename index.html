@@ -487,7 +487,12 @@
 
     <section class="panel hidden" id="resultPanel" aria-live="polite">
       <span class="eyebrow">YOUR STARTING PLAN</span>
-      <div id="resultStatus" class="notice hidden" role="status" aria-live="polite"></div>
+
+      <div id="resultStatus" class="notice hidden"
+           role="status" aria-live="polite"></div>
+
+      <!-- Required container for the generated checklist -->
+      <div id="result" class="result"></div>
 
       <div class="privacy">
         <b>Important:</b> This tool provides general guidance, not an
@@ -503,6 +508,7 @@
           Copy checklist
         </button>
       </div>
+
       <div id="copyStatus" class="notice hidden" role="status"></div>
     </section>
   </main>
@@ -522,6 +528,7 @@
     const resultPanel = document.getElementById('resultPanel');
     const resultEl = document.getElementById('result');
     const statusEl = document.getElementById('status');
+    const resultStatus = document.getElementById('resultStatus');
     const submitBtn = document.getElementById('submitBtn');
     const copyBtn = document.getElementById('copyBtn');
     const copyStatus = document.getElementById('copyStatus');
@@ -645,21 +652,20 @@
       })[character]);
     }
 
+    // Show status in both locations so errors remain visible
+    // after the form panel is hidden.
     function showStatus(message, type = '') {
-  const resultStatus = document.getElementById('resultStatus');
-  const target = resultPanel.classList.contains('hidden')
-    ? statusEl
-    : resultStatus;
+      [statusEl, resultStatus].forEach(target => {
+        if (!target) return;
 
-  if (!target) return;
+        target.textContent = message;
+        target.className = 'notice';
 
-  target.textContent = message;
-  target.className = 'notice';
-
-  if (type) {
-    target.classList.add(type);
-  }
-}
+        if (type) {
+          target.classList.add(type);
+        }
+      });
+    }
 
     function render(data, topic) {
       const defaults = fallback[topic] || fallback.paperwork;
@@ -806,14 +812,20 @@
 
       formPanel.classList.add('hidden');
       resultPanel.classList.remove('hidden');
-      resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      resultPanel.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     });
 
     document.getElementById('backBtn').addEventListener('click', () => {
       resultPanel.classList.add('hidden');
       formPanel.classList.remove('hidden');
       copyStatus.classList.add('hidden');
-      formPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      formPanel.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     });
 
     copyBtn.addEventListener('click', async () => {
@@ -836,4 +848,3 @@
   </script>
 </body>
 </html>
-
