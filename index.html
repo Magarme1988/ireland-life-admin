@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -388,20 +387,26 @@
     }
 
     .task-content {
+      display: flex;
       flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 7px;
       min-width: 0;
     }
 
     .task-title {
       display: block;
+      width: 100%;
       font-weight: 750;
       line-height: 1.5;
-      margin: 0 0 7px;
+      margin: 0;
       overflow-wrap: anywhere;
     }
 
     .task-description {
       display: block;
+      width: 100%;
       color: var(--muted);
       font-size: .94rem;
       line-height: 1.7;
@@ -883,6 +888,7 @@
 
       const countEl = document.getElementById('progressCount');
       const barEl = document.getElementById('progressBar');
+      const trackEl = document.getElementById('progressTrack');
       const captionEl = document.getElementById('progressCaption');
 
       if (countEl) {
@@ -891,6 +897,14 @@
 
       if (barEl) {
         barEl.style.width = `${percentage}%`;
+      }
+
+      if (trackEl) {
+        trackEl.setAttribute('aria-valuenow', String(completed));
+        trackEl.setAttribute(
+          'aria-valuetext',
+          `${completed} of ${total} checklist steps completed`
+        );
       }
 
       if (captionEl) {
@@ -1019,12 +1033,13 @@
               <a
                 class="resource-card"
                 href="${safe(link.url)}"
+                aria-label="Visit ${safe(link.title)} (opens in a new tab)"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <span class="resource-content">
                   <span class="resource-title">${safe(link.title)}</span>
-                  <span class="resource-description">Open official website</span>
+                  <span class="resource-description">Visit official website ↗</span>
                 </span>
                 <span class="resource-arrow" aria-hidden="true">↗</span>
               </a>
