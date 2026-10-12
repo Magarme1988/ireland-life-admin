@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ireland Life Admin</title>
+<style>
+:root{--green:#173f35;--mint:#e4efe7;--ink:#18231f;--muted:#66736d;--line:#dce5df;--paper:#fff;--bg:#f5f8f5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--green);color:white;padding:26px max(22px,calc((100% - 920px)/2)) 32px}
+.brand{font-weight:750;letter-spacing:.2px}.tag{color:#d9e9df;font-size:.92rem}.hero{font-size:clamp(2rem,5vw,3rem);line-height:1.08;max-width:680px;margin:25px 0 12px}.wrap{max-width:920px;margin:26px auto;padding:0 18px}
+.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:clamp(18px,4vw,30px);box-shadow:0 8px 28px #1b3e2a0a}
+h2{margin:0 0 4px;font-size:1.45rem}p.sub{margin:0 0 22px;color:var(--muted)}fieldset{border:0;padding:0;margin:22px 0}legend{font-weight:700;margin-bottom:10px}.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:12px;margin:8px 0;cursor:pointer}.choice:has(input:checked){border-color:#5c927c;background:#f1f7f2}.choice input{margin-top:5px;accent-color:var(--green)}button{background:var(--green);color:white;border:0;border-radius:10px;padding:13px 18px;font-size:1rem;font-weight:700;cursor:pointer}button:disabled{opacity:.6;cursor:wait}.secondary{background:white;color:var(--green);border:1px solid var(--line)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.privacy{background:#f2f6f2;border-radius:12px;padding:14px;color:#52645a;font-size:.9rem}.hidden{display:none}.result h3{margin:22px 0 8px}.result li{margin:10px 0}.links a{display:block;margin:8px 0;color:#165e4b;overflow-wrap:anywhere}.pill{display:inline-block;background:var(--mint);color:var(--green);padding:4px 9px;border-radius:999px;font-size:.78rem;font-weight:700}.status{color:var(--muted);font-size:.9rem;margin-top:12px}.foot{color:var(--muted);font-size:.82rem;text-align:center;padding:22px}
+textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;min-height:85px} .error{color:#a22}.checklist li{padding-left:4px}.checklist input{margin-right:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🌱 Ireland Life Admin</div>
+  <div class="tag">Family admin, made simpler.</div>
+  <div class="hero">Less paperwork.<br>More clarity.</div>
+  <div style="max-width:650px;color:#e2ece7">A practical guide to childcare, family benefits and everyday paperwork in Ireland.</div>
+</header>
+<main class="wrap">
+<section class="panel" id="formPanel">
+  <h2>Let's make a plan</h2><p class="sub">Answer a few questions to get a personalised starting checklist.</p>
+  <form id="planForm">
+    <fieldset><legend>1. What do you need help with?</legend>
+      <label class="choice"><input type="radio" name="topic" value="childcare" checked><span><b>Childcare and the National Childcare Scheme</b><br><small>Understand next steps and what to check.</small></span></label>
+      <label class="choice"><input type="radio" name="topic" value="benefits"><span><b>Family benefits and financial support</b><br><small>Find official guidance and prepare questions.</small></span></label>
+      <label class="choice"><input type="radio" name="topic" value="paperwork"><span><b>Family paperwork and documents</b><br><small>Organise a task into manageable steps.</small></span></label>
+    </fieldset>
+    <fieldset><legend>2. What best describes your family situation?</legend>
+      <label class="choice"><input type="radio" name="family" value="working" checked><span>One or both parents are working</span></label>
+      <label class="choice"><input type="radio" name="family" value="studying"><span>A parent is studying or training</span></label>
+      <label class="choice"><input type="radio" name="family" value="other"><span>Another or mixed situation</span></label>
+    </fieldset>
+    <fieldset><legend>3. Child's age group (optional)</legend>
+      <label class="choice"><input type="radio" name="age" value="under3" checked><span>Under 3 years</span></label>
+      <label class="choice"><input type="radio" name="age" value="3to5"><span>3–5 years</span></label>
+      <label class="choice"><input type="radio" name="age" value="school"><span>School age</span></label>
+      <label class="choice"><input type="radio" name="age" value="none"><span>Not applicable / prefer not to say</span></label>
+    </fieldset>
+    <fieldset><legend>4. Where are you in the process?</legend>
+      <label class="choice"><input type="radio" name="stage" value="planning" checked><span>Exploring options</span></label>
+      <label class="choice"><input type="radio" name="stage" value="applying"><span>Preparing an application</span></label>
+      <label class="choice"><input type="radio" name="stage" value="existing"><span>Already receiving support or managing a case</span></label>
+    </fieldset>
+    <fieldset><legend>5. Anything specific? (optional)</legend><textarea name="details" maxlength="600" placeholder="Example: I want to understand what to ask my childcare provider. Do not enter names, PPS numbers, exact income or other sensitive details."></textarea></fieldset>
+    <div class="privacy"><b>Privacy first:</b> Do not enter names, PPS numbers, bank details or upload personal documents. The prototype does not save your answers.</div>
+    <div class="actions"><button id="submitBtn" type="submit">Build my checklist →</button></div>
+    <div id="status" class="status" role="status"></div>
+  </form>
+</section>
+<section class="panel hidden" id="resultPanel" aria-live="polite">
+  <span class="pill">YOUR STARTING PLAN</span><div id="result" class="result"></div>
+  <div class="privacy"><b>Important:</b> This tool provides general guidance, not an eligibility decision or legal/financial advice. Check current rules with the relevant official authority.</div>
+  <div class="actions"><button class="secondary" id="backBtn">← Edit answers</button><button id="copyBtn">Copy checklist</button></div>
+</section>
+</main>
+<div class="foot">Ireland Life Admin · AI & Innovation final project · MVP prototype</div>
+<script>
+const form=document.getElementById('planForm'), statusEl=document.getElementById('status');
+let lastText='';
+const fallback={
+ childcare:{title:'Childcare support',steps:[
+  ['Review the National Childcare Scheme (NCS)','Read the current official guidance and check which scheme and conditions may apply.'],
+  ['Contact your childcare provider','Ask whether the provider participates in NCS and how a subsidy is applied.'],
+  ['Prepare the information requested','Use the official checklist to identify the parent, child and household details needed.'],
+  ['Check before submitting','Review the application instructions and confirm any deadlines directly with the scheme.'],
+ ],links:[['National Childcare Scheme','https://www.ncs.gov.ie/'],['Citizens Information: Childcare','https://www.citizensinformation.ie/en/education/pre-school-education-and-childcare/']]},
+ benefits:{title:'Family benefits and financial support',steps:[
+  ['Identify the payment you want to understand','Start with one specific payment or support scheme.'],
+  ['Review the current eligibility conditions','Check the official rules; do not assume that a family circumstance guarantees eligibility.'],
+  ['Prepare the information requested','Use the official guidance to identify relevant information and supporting documents.'],
+  ['Confirm rates and application steps','Check current rates, deadlines and instructions with the responsible authority.'],
+ ],links:[['Department of Social Protection','https://www.gov.ie/en/department-of-social-protection/'],['Citizens Information: Social welfare','https://www.citizensinformation.ie/en/social-welfare/']]},
+ paperwork:{title:'Family paperwork',steps:[
+  ['Define the task and desired outcome','Identify which service or organisation you need to contact.'],
+  ['Check the official document requirements','Confirm the current forms, identification and supporting documents required.'],
+  ['Make a missing-documents list','Separate documents you already have from items you still need to obtain.'],
+  ['Verify submission method and deadline','Use the official channel and keep a record of any confirmation.'],
+ ],links:[['Citizens Information','https://www.citizensinformation.ie/'],['Government of Ireland','https://www.gov.ie/']]}
+};
+function selected(name){return form.querySelector(`[name="${name}"]:checked`)?.value||''}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(data, topic){
+ const r=document.getElementById('result');
+ const steps=Array.isArray(data.steps)?data.steps:fallback[topic].steps;
+ const links=Array.isArray(data.links)?data.links:fallback[topic].links;
+ r.innerHTML=`<h2>${safe(data.title||fallback[topic].title)}</h2><p>${safe(data.summary||'Use this checklist as a starting point. Verify current requirements with the official sources below.')}</p><h3>Recommended next steps</h3><ol class="checklist">${steps.map(s=>`<li><label><input type="checkbox"><b>${safe(s.title||s[0]||'Next step')}</b><br>${safe(s.description||s[1]||'')}</label></li>`).join('')}</ol><h3>Official resources</h3><div class="links">${links.map(l=>`<a href="${safe(l.url||l[1])}" target="_blank" rel="noopener noreferrer">${safe(l.title||l[0])} ↗</a>`).join('')}</div><p class="status">AI-assisted guidance is a starting point, not an eligibility decision.</p>`;
+ lastText=(data.title||fallback[topic].title)+'\n\n'+steps.map((s,i)=>`${i+1}. ${s.title||s[0]} — ${s.description||s[1]}`).join('\n')+'\n\nOfficial links:\n'+links.map(l=>`${l.title||l[0]}: ${l.url||l[1]}`).join('\n');
+}
+form.addEventListener('submit',async e=>{
+ e.preventDefault();const topic=selected('topic');
+ const payload={topic,family: selected('family'),childAge:selected('age'),stage:selected('stage'),details:form.elements.details.value.trim()};
+ const btn=document.getElementById('submitBtn');btn.disabled=true;statusEl.textContent='Preparing your checklist…';
+ try{
+  const res=await fetch('/api/plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  if(!res.ok)throw new Error('AI endpoint unavailable');
+  const data=await res.json();render(data,topic);
+  statusEl.textContent=data.aiPowered?'Generated with AI. Verify all details using official sources.':'Demo checklist generated from predefined guidance.';
+ }catch(err){
+  render(fallback[topic],topic);
+  statusEl.textContent='Offline/demo mode: a predefined checklist is shown. Connect the AI backend to enable generated answers.';
+ }
+ document.getElementById('formPanel').classList.add('hidden');document.getElementById('resultPanel').classList.remove('hidden');btn.disabled=false;
+});
+document.getElementById('backBtn').onclick=()=>{document.getElementById('resultPanel').classList.add('hidden');document.getElementById('formPanel').classList.remove('hidden')};
+document.getElementById('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(lastText);document.getElementById('copyBtn').textContent='Copied!'}catch(e){alert(lastText)}};
+</script>
+</body></html>
