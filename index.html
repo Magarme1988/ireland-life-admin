@@ -646,13 +646,20 @@
     }
 
     function showStatus(message, type = '') {
-      statusEl.textContent = message;
-      statusEl.className = 'notice';
+  const resultStatus = document.getElementById('resultStatus');
+  const target = resultPanel.classList.contains('hidden')
+    ? statusEl
+    : resultStatus;
 
-      if (type) {
-        statusEl.classList.add(type);
-      }
-    }
+  if (!target) return;
+
+  target.textContent = message;
+  target.className = 'notice';
+
+  if (type) {
+    target.classList.add(type);
+  }
+}
 
     function render(data, topic) {
       const defaults = fallback[topic] || fallback.paperwork;
